@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anonymous Forum</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🗣 Anonymous Forum</h1>
+    <form action="/post" method="POST">
+      <textarea name="content" placeholder="Say something..." required></textarea>
+      <button type="submit">Post</button>
+    </form>
+    <div id="posts"></div>
+  </div>
+  <script>
+    fetch('/api/posts')
+      .then(res => res.json())
+      .then(posts => {
+        const postsDiv = document.getElementById('posts');
+        posts.forEach(post => {
+          const div = document.createElement('div');
+          div.className = 'post';
+          div.innerHTML = `
+            <p>${post.content}</p>
+            <span>${new Date(post.created_at).toLocaleString()}</span>
+          `;
+          postsDiv.appendChild(div);
+        });
+      });
+  </script>
+</body>
+</html>
